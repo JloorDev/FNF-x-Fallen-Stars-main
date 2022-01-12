@@ -817,19 +817,14 @@ class PlayState extends MusicBeatState
 		var camPos:FlxPoint = new FlxPoint(gf.getGraphicMidpoint().x, gf.getGraphicMidpoint().y);
 		camPos.x += gf.cameraPosition[0];
 		camPos.y += gf.cameraPosition[1];
-
+/*
 		var bgEffect:Dynamic = null;
 		var daSong = SONG.song.toLowerCase();
-
 		switch(daSong) {
-			//case 'nose':
-				//bgEffect = new Shaders.VCRDistortionEffect(0.0069,true,true,true);
 			case 'our-broken-constellations':
-				bgEffect = new Shaders.ChromaticAberrationEffect();
-				bgEffect.setChrome(0.0015);
+				bgEffect = new Shaders.VCRDistortionEffect(0.0069,true,true,true);
 		}
-		if(!ClientPrefs.lowQuality)
-			addShaderToCamera('camGame',bgEffect);
+		addShaderToCamera('camGame',bgEffect);*/
 
 		if(dad.curCharacter.startsWith('gf')) {
 			dad.setPosition(GF_X, GF_Y);

@@ -38,7 +38,6 @@ class MainMenuState extends MusicBeatState
 		/*#if MODS_ALLOWED 'mods', #end
 		#if ACHIEVEMENTS_ALLOWED 'awards', #end*/
 		'credits',
-		#if !switch 'donate', #end
 		'options'
 	];
 
@@ -51,7 +50,7 @@ class MainMenuState extends MusicBeatState
 	{
 		#if desktop
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In the Menus", null);
+		DiscordClient.changePresence("In the Menu", null);
 		#end
 
 		WeekData.setDirectoryFromWeek();

@@ -21,6 +21,7 @@ import flixel.FlxBasic;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import openfl.display.BlendMode;
+import Shaders;
 import openfl.utils.Assets;
 #if sys
 import sys.FileSystem;
