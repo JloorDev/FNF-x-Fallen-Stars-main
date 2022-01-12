@@ -279,10 +279,6 @@ class GrainEffect extends Effect {
 	public function update(elapsed){
 		shader.uTime.value[0] += elapsed;
 	}
-	
-	
-	
-	
 }
 
 
