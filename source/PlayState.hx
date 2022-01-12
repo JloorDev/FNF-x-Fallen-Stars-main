@@ -9,6 +9,7 @@ import WiggleEffect.WiggleEffectType;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.FlxG;
+import openfl.filters.BitmapFilter;
 import flixel.FlxGame;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -49,6 +50,7 @@ import flixel.input.keyboard.FlxKey;
 import openfl.events.KeyboardEvent;
 import Achievements;
 import StageData;
+import Shaders;
 import FunkinLua;
 import DialogueBoxPsych;
 
@@ -91,6 +93,10 @@ class PlayState extends MusicBeatState
 	public var modchartTimers:Map<String, FlxTimer> = new Map<String, FlxTimer>();
 	public var modchartSounds:Map<String, FlxSound> = new Map<String, FlxSound>();
 	#end
+	public var shader_chromatic_abberation:ChromaticAberrationEffect;
+	public var camGameShaders:Array<ShaderEffect> = [];
+	public var camHUDShaders:Array<ShaderEffect> = [];
+	public var camOtherShaders:Array<ShaderEffect> = [];
 
 	//event variables
 	private var isCameraOnForcedPos:Bool = false;
@@ -117,6 +123,7 @@ class PlayState extends MusicBeatState
 	public var boyfriendGroup:FlxSpriteGroup;
 	public var dadGroup:FlxSpriteGroup;
 	public var gfGroup:FlxSpriteGroup;
+	public var shaderUpdates:Array<Float->Void> = [];
 
 	public static var curStage:String = '';
 	public static var isPixelStage:Bool = false;
@@ -811,6 +818,19 @@ class PlayState extends MusicBeatState
 		camPos.x += gf.cameraPosition[0];
 		camPos.y += gf.cameraPosition[1];
 
+		var bgEffect:Dynamic = null;
+		var daSong = SONG.song.toLowerCase();
+
+		switch(daSong) {
+			//case 'nose':
+				//bgEffect = new Shaders.VCRDistortionEffect(0.0069,true,true,true);
+			case 'our-broken-constellations':
+				bgEffect = new Shaders.ChromaticAberrationEffect();
+				bgEffect.setChrome(0.0015);
+		}
+		if(!ClientPrefs.lowQuality)
+			addShaderToCamera('camGame',bgEffect);
+
 		if(dad.curCharacter.startsWith('gf')) {
 			dad.setPosition(GF_X, GF_Y);
 			gf.visible = false;
@@ -1242,6 +1262,39 @@ class PlayState extends MusicBeatState
 				}
 		}
 	}
+
+	public function addShaderToCamera(cam:String,effect:ShaderEffect){//STOLE FROM ANDROMEDA
+		switch(cam.toLowerCase()) {
+			case 'camhud' | 'hud':
+					camHUDShaders.push(effect);
+					var newCamEffects:Array<BitmapFilter>=[]; // IT SHUTS HAXE UP IDK WHY BUT WHATEVER IDK WHY I CANT JUST ARRAY<SHADERFILTER>
+					for(i in camHUDShaders){
+					  newCamEffects.push(new ShaderFilter(i.shader));
+					}
+					camHUD.setFilters(newCamEffects);
+			case 'camother' | 'other':
+					camOtherShaders.push(effect);
+					var newCamEffects:Array<BitmapFilter>=[]; // IT SHUTS HAXE UP IDK WHY BUT WHATEVER IDK WHY I CANT JUST ARRAY<SHADERFILTER>
+					for(i in camOtherShaders){
+					  newCamEffects.push(new ShaderFilter(i.shader));
+					}
+					camOther.setFilters(newCamEffects);
+			case 'camgame' | 'game':
+					camGameShaders.push(effect);
+					var newCamEffects:Array<BitmapFilter>=[]; // IT SHUTS HAXE UP IDK WHY BUT WHATEVER IDK WHY I CANT JUST ARRAY<SHADERFILTER>
+					for(i in camGameShaders){
+					  newCamEffects.push(new ShaderFilter(i.shader));
+					}
+					camGame.setFilters(newCamEffects);
+			default:
+				if(modchartSprites.exists(cam)) {
+					Reflect.setProperty(modchartSprites.get(cam),"shader",effect.shader);
+				} else {
+					var OBJ = Reflect.getProperty(PlayState.instance,cam);
+					Reflect.setProperty(OBJ,"shader", effect.shader);
+				}	
+		}
+    }
 
 	function startCharacterLua(name:String)
 	{
@@ -2804,6 +2857,52 @@ class PlayState extends MusicBeatState
 				}
 				char.playAnim(value1, true);
 				char.specialAnim = true;
+
+			case 'Chromatic Aberration Shader':
+				if(!ClientPrefs.lowQuality) {
+				var aberration = new Shaders.ChromaticAberrationEffect();
+				switch(value1.toLowerCase()){
+					case 'dad' | 'opponent' | '1':
+						dad.shader = aberration.shader;
+					case 'bf' | 'boyfriend' | '0':
+						boyfriend.shader = aberration.shader;
+					case 'gf' | 'girlfriend' | '2':
+						gf.shader = aberration.shader;
+					case 'camgame' | 'camhud' | 'camother' | 'game' |'hud' | 'other':
+						addShaderToCamera(value1.toLowerCase(), aberration);
+				}
+				aberration.setChrome(Std.parseFloat(value2));
+			}
+			case 'VCRDistorsion Shader':
+				if(!ClientPrefs.lowQuality) {
+				var distorsion = new Shaders.VCRDistortionEffect(Std.parseFloat(value2),true,true,true);
+				switch(value1.toLowerCase()){
+					case 'dad' | 'opponent' | '1':
+						dad.shader = distorsion.shader;
+					case 'bf' | 'boyfriend' | '0':
+						boyfriend.shader = distorsion.shader;
+					case 'gf' | 'girlfriend' | '2':
+						gf.shader = distorsion.shader;
+					case 'camgame' | 'camhud' | 'camother' | 'game' |'hud' | 'other':
+						addShaderToCamera(value1.toLowerCase(), distorsion);
+				}
+				//distorsion.setChrome(Std.parseFloat(value2));
+			}
+			case 'Glitch Shader':
+				if(!ClientPrefs.lowQuality) {
+				var glitch = new Shaders.GlitchEffect(Std.parseFloat(value2),0.3,0.05);
+				switch(value1.toLowerCase()){
+					case 'dad' | 'opponent' | '1':
+						dad.shader = glitch.shader;
+					case 'bf' | 'boyfriend' | '0':
+						boyfriend.shader = glitch.shader;
+					case 'gf' | 'girlfriend' | '2':
+						gf.shader = glitch.shader;
+					case 'camgame' | 'camhud' | 'camother' | 'game' |'hud' | 'other':
+						addShaderToCamera(value1.toLowerCase(), glitch);
+				}
+				//glitch.setChrome(Std.parseFloat(value2));
+			}
 
 			case 'Camera Follow Pos':
 				var val1:Float = Std.parseFloat(value1);
