@@ -1,0 +1,78 @@
+{
+	"animations": [
+		{
+			"loop": false,
+			"offsets": [
+				68,
+				-103
+			],
+			"fps": 24,
+			"anim": "singLEFT",
+			"indices": [],
+			"name": "Sans Left"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				2,
+				-106
+			],
+			"fps": 24,
+			"anim": "singDOWN",
+			"indices": [],
+			"name": "Sans Down"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				14,
+				-75
+			],
+			"fps": 24,
+			"anim": "singUP",
+			"indices": [],
+			"name": "Sans Up"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				-2,
+				-78
+			],
+			"fps": 24,
+			"anim": "singRIGHT",
+			"indices": [],
+			"name": "Sans Rigth"
+		},
+		{
+			"loop": false,
+			"offsets": [
+				0,
+				-90
+			],
+			"fps": 24,
+			"anim": "idle",
+			"indices": [],
+			"name": "Sans idle"
+		}
+	],
+	"no_antialiasing": false,
+	"image": "characters/Fallen_Stars_Sans",
+	"position": [
+		0,
+		0
+	],
+	"healthicon": "face",
+	"flip_x": false,
+	"healthbar_colors": [
+		255,
+		0,
+		95
+	],
+	"camera_position": [
+		0,
+		0
+	],
+	"sing_duration": 6.1,
+	"scale": 1
+}
