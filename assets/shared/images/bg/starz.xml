@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="starz.png">
+	<!-- Created with Adobe Animate version 21.0.2.37893 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="shootinstarz0000" x="20" y="20" width="118" height="55" frameX="-1121" frameY="0" frameWidth="1239" frameHeight="413"/>
+	<SubTexture name="shootinstarz0001" x="20" y="20" width="118" height="55" frameX="-1121" frameY="0" frameWidth="1239" frameHeight="413"/>
+	<SubTexture name="shootinstarz0002" x="148" y="20" width="1096" height="320" frameX="-102" frameY="-29" frameWidth="1239" frameHeight="413"/>
+	<SubTexture name="shootinstarz0003" x="148" y="20" width="1096" height="320" frameX="-102" frameY="-29" frameWidth="1239" frameHeight="413"/>
+	<SubTexture name="shootinstarz0004" x="1254" y="20" width="680" height="252" frameX="-15" frameY="-148" frameWidth="1239" frameHeight="413"/>
+	<SubTexture name="shootinstarz0005" x="1254" y="20" width="680" height="252" frameX="-15" frameY="-148" frameWidth="1239" frameHeight="413"/>
+	<SubTexture name="shootinstarz0006" x="20" y="350" width="197" height="107" frameX="-4" frameY="-306" frameWidth="1239" frameHeight="413"/>
+	<SubTexture name="shootinstarz0007" x="20" y="350" width="197" height="107" frameX="-4" frameY="-306" frameWidth="1239" frameHeight="413"/>
+	<SubTexture name="shootinstarz0008" x="227" y="350" width="53" height="34" frameX="0" frameY="-378" frameWidth="1239" frameHeight="413"/>
+	<SubTexture name="shootinstarz0009" x="227" y="350" width="53" height="34" frameX="0" frameY="-378" frameWidth="1239" frameHeight="413"/>
+	<SubTexture name="shootinstarz0010" x="290" y="350" width="21" height="13" frameX="-6" frameY="-395" frameWidth="1239" frameHeight="413"/>
+	<SubTexture name="shootinstarz0011" x="290" y="350" width="21" height="13" frameX="-6" frameY="-395" frameWidth="1239" frameHeight="413"/>
+	<SubTexture name="shootinstarz0012" x="321" y="350" width="1" height="1" frameX="0" frameY="0" frameWidth="1239" frameHeight="413"/>
+</TextureAtlas>

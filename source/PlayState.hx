@@ -270,7 +270,7 @@ class PlayState extends MusicBeatState
 	public var luaArray:Array<FunkinLua> = [];
 	private var luaDebugGroup:FlxTypedGroup<DebugLuaText>;
 	public var introSoundsSuffix:String = '';
-
+	var starz:BGSprite;
 	// Debug buttons
 	private var debugKeysChart:Array<FlxKey>;
 	private var debugKeysCharacter:Array<FlxKey>;
@@ -321,11 +321,11 @@ class PlayState extends MusicBeatState
 		camOther.bgColor.alpha = 0;
 
 		FlxG.cameras.reset(camGame);
-		FlxG.cameras.add(camHUD);
-		FlxG.cameras.add(camOther);
+		FlxG.cameras.add(camHUD,false);
+		FlxG.cameras.add(camOther,false);
 		grpNoteSplashes = new FlxTypedGroup<NoteSplash>();
 
-		FlxCamera.defaultCameras = [camGame];
+		//FlxCamera.defaultCameras = [camGame];
 		CustomFadeTransition.nextCamera = camOther;
 		//FlxG.cameras.setDefaultDrawTarget(camGame, true);
 
@@ -376,6 +376,8 @@ class PlayState extends MusicBeatState
 					curStage = 'school';
 				case 'thorns':
 					curStage = 'schoolEvil';
+				case 'our-broken':
+					curStage = 'space';
 				default:
 					curStage = 'stage';
 			}
@@ -680,6 +682,29 @@ class PlayState extends MusicBeatState
 					bg.antialiasing = false;
 					add(bg);
 				}
+			case 'space':
+				var bg:FlxSprite = new FlxSprite(-600,-200).loadGraphic(Paths.image('bg/Space'));
+				add(bg);
+
+				var bg1:FlxSprite = new FlxSprite(-600,-200).loadGraphic(Paths.image('bg/Stars'));
+				add(bg1);
+
+				var a1:FlxSprite = new FlxSprite().loadGraphic(Paths.image('bg/a1'));
+				FlxTween.tween(a1,{"x":750, "y":900},10,{ease: FlxEase.circIn});
+				add(a1);
+
+				var a2:FlxSprite = new FlxSprite().loadGraphic(Paths.image('bg/a2'));
+				FlxTween.tween(a2,{"x":-800, "y":-900},10,{ease: FlxEase.circIn});
+				add(a2);
+
+				starz = new BGSprite('bg/starz', 0, 0, 0, 0, ['shootinstarz'], false);
+				//starz.setGraphicSize(Std.int(bgGhouls.width * daPixelZoom));
+				//starz.updateHitbox();
+				//starz.visible = false;
+				add(starz);
+
+				var bg0:FlxSprite = new FlxSprite(-600,-200).loadGraphic(Paths.image('bg/bg0'));
+				add(bg0);
 		}
 
 		if(isPixelStage) {
@@ -825,6 +850,21 @@ class PlayState extends MusicBeatState
 				bgEffect = new Shaders.VCRDistortionEffect(0.0069,true,true,true);
 		}
 		addShaderToCamera('camGame',bgEffect);*/
+
+		var bgEffect:Dynamic = null;
+		var curStages = curStage;
+
+		//if(curStages == 'space')
+			//gf.visible = false;
+
+		switch (curStages)
+		{
+			case 'space':
+				bgEffect = new Shaders.VCRDistortionEffect(0.0069, true, true, true);
+				trace('lol, shaders');
+		}
+		if (!ClientPrefs.lowQuality && bgEffect!=null)
+			addShaderToCamera('camGame', bgEffect);
 
 		if(dad.curCharacter.startsWith('gf')) {
 			dad.setPosition(GF_X, GF_Y);
@@ -2080,6 +2120,7 @@ class PlayState extends MusicBeatState
 	var startedCountdown:Bool = false;
 	var canPause:Bool = true;
 	var limoSpeed:Float = 0;
+	var shakeon:Bool = false;
 
 	override public function update(elapsed:Float)
 	{
@@ -2087,6 +2128,9 @@ class PlayState extends MusicBeatState
 		{
 			iconP1.swapOldIcon();
 		}
+
+		if (shakeon)
+			FlxG.camera.shake(0.02, 0.02);
 
 		if (ClientPrefs.cameraMovement == true && isCameraOnForcedPos == true && SONG.notes[Math.floor(curStep / 16)].mustHitSection && boyfriend.animation.curAnim.name == null && !doingreef)
 			isCameraOnForcedPos = false;
@@ -2853,51 +2897,35 @@ class PlayState extends MusicBeatState
 				char.playAnim(value1, true);
 				char.specialAnim = true;
 
-			case 'Chromatic Aberration Shader':
-				if(!ClientPrefs.lowQuality) {
-				var aberration = new Shaders.ChromaticAberrationEffect();
-				switch(value1.toLowerCase()){
-					case 'dad' | 'opponent' | '1':
-						dad.shader = aberration.shader;
-					case 'bf' | 'boyfriend' | '0':
-						boyfriend.shader = aberration.shader;
-					case 'gf' | 'girlfriend' | '2':
-						gf.shader = aberration.shader;
-					case 'camgame' | 'camhud' | 'camother' | 'game' |'hud' | 'other':
-						addShaderToCamera(value1.toLowerCase(), aberration);
-				}
-				aberration.setChrome(Std.parseFloat(value2));
-			}
-			case 'VCRDistorsion Shader':
-				if(!ClientPrefs.lowQuality) {
-				var distorsion = new Shaders.VCRDistortionEffect(Std.parseFloat(value2),true,true,true);
-				switch(value1.toLowerCase()){
-					case 'dad' | 'opponent' | '1':
-						dad.shader = distorsion.shader;
-					case 'bf' | 'boyfriend' | '0':
-						boyfriend.shader = distorsion.shader;
-					case 'gf' | 'girlfriend' | '2':
-						gf.shader = distorsion.shader;
-					case 'camgame' | 'camhud' | 'camother' | 'game' |'hud' | 'other':
-						addShaderToCamera(value1.toLowerCase(), distorsion);
-				}
-				//distorsion.setChrome(Std.parseFloat(value2));
-			}
-			case 'Glitch Shader':
-				if(!ClientPrefs.lowQuality) {
-				var glitch = new Shaders.GlitchEffect(Std.parseFloat(value2),0.3,0.05);
-				switch(value1.toLowerCase()){
-					case 'dad' | 'opponent' | '1':
-						dad.shader = glitch.shader;
-					case 'bf' | 'boyfriend' | '0':
-						boyfriend.shader = glitch.shader;
-					case 'gf' | 'girlfriend' | '2':
-						gf.shader = glitch.shader;
-					case 'camgame' | 'camhud' | 'camother' | 'game' |'hud' | 'other':
-						addShaderToCamera(value1.toLowerCase(), glitch);
-				}
-				//glitch.setChrome(Std.parseFloat(value2));
-			}
+				case 'Add Shader':
+					if (!ClientPrefs.lowQuality)
+					{
+						var newShader:Dynamic = null;
+						switch(value2.toLowerCase()){
+							case 'chromatic aberration':
+								newShader = new Shaders.ChromaticAberrationEffect();
+								newShader.setChrome(0.015);
+							case 'vcrdistortion':
+								newShader = new Shaders.VCRDistortionEffect(0.0069,true,true,true);
+							case 'glitch':
+								newShader = new Shaders.GlitchEffect(0.0069, 0.02, 0.03);
+							case 'bloom':
+								newShader = new Shaders.BloomEffect(0.05,0.6);
+							case 'pulse':
+								newShader = new Shaders.PulseEffect(0.6,0.07,0.3);
+						}
+						switch (value1.toLowerCase())
+						{
+							case 'dad' | 'opponent' | '1':
+								dad.shader = newShader.shader;
+							case 'bf' | 'boyfriend' | '0':
+								boyfriend.shader = newShader.shader;
+							case 'gf' | 'girlfriend' | '2':
+								gf.shader = newShader.shader;
+							case 'camgame' | 'camhud' | 'camother' | 'game' | 'hud' | 'other':
+								addShaderToCamera(value1.toLowerCase(), newShader);
+						}
+					}
 
 			case 'Camera Follow Pos':
 				var val1:Float = Std.parseFloat(value1);
@@ -3095,6 +3123,9 @@ class PlayState extends MusicBeatState
 				case 'school' | 'schoolEvil':
 					camFollow.x = boyfriend.getMidpoint().x - 200;
 					camFollow.y = boyfriend.getMidpoint().y - 200;
+				case 'space':
+					camFollow.x = boyfriend.getMidpoint().x - 150;
+					camFollow.y = boyfriend.getMidpoint().y - 100;
 			}
 			camFollow.x -= boyfriend.cameraPosition[0];
 			camFollow.y += boyfriend.cameraPosition[1];
@@ -4177,6 +4208,38 @@ class PlayState extends MusicBeatState
 
 		if(curStep == lastStepHit) {
 			return;
+		}
+
+		if(curStage == 'space') {
+			switch (curStep) {
+				case 2:
+					starz.visible = false;
+				case 287:
+					defaultCamZoom = 0.7;
+				case 351:
+					defaultCamZoom = 0.57;
+				case 607:
+					shakeon = true;
+				case 672:
+					shakeon = false;
+				case 936:
+					defaultCamZoom = 0.9;
+				case 1071:
+					defaultCamZoom = 0.7;
+				case 1200:
+					defaultCamZoom = 0.57;
+					shakeon = true;
+				case 1456:
+					shakeon = false;
+				case 1463:
+					FlxTween.tween(healthBarBG,{"y":900},0.4,{ease: FlxEase.elasticInOut});
+					FlxTween.tween(healthBar,{"y":900},0.4,{ease: FlxEase.elasticInOut});
+					FlxTween.tween(iconP1,{"y":900},0.4,{ease: FlxEase.elasticInOut});
+					FlxTween.tween(iconP2,{"y":900},0.4,{ease: FlxEase.elasticInOut});
+					defaultCamZoom = 0.9;
+				case 1857:
+					defaultCamZoom = 0.7;
+			}
 		}
 
 		lastStepHit = curStep;
