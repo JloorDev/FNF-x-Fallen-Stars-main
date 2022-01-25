@@ -2420,7 +2420,9 @@ class PlayState extends MusicBeatState
 			health = 0;
 			trace("RESET = True");
 		}
-		doDeathCheck();
+		
+		if (!dad.animation.curAnim.name.startsWith("sing"))
+			doDeathCheck();
 
 		var roundedSpeed:Float = FlxMath.roundDecimal(songSpeed, 2);
 		if (unspawnNotes[0] != null)
@@ -3844,6 +3846,9 @@ class PlayState extends MusicBeatState
 			];
 
 			char.playAnim(animToPlay, true);
+			if (dad.animation.curAnim.name.startsWith("sing")){
+				health -= 0.01;
+			}
 			if (ClientPrefs.cameraMovement == true && !notisturn && cameraTwn == null && !doingreef)
 				triggerEventNote('Camera Follow Pos',Std.string(Std.int(singAnimationsPostions[Std.int(Math.abs(note.noteData))][0])),Std.string(Std.int(singAnimationsPostions[Std.int(Math.abs(note.noteData))][1])));
 			char.holdTimer = 0;
@@ -4232,10 +4237,18 @@ class PlayState extends MusicBeatState
 				case 1456:
 					shakeon = false;
 				case 1463:
-					FlxTween.tween(healthBarBG,{"y":900},0.4,{ease: FlxEase.elasticInOut});
-					FlxTween.tween(healthBar,{"y":900},0.4,{ease: FlxEase.elasticInOut});
-					FlxTween.tween(iconP1,{"y":900},0.4,{ease: FlxEase.elasticInOut});
-					FlxTween.tween(iconP2,{"y":900},0.4,{ease: FlxEase.elasticInOut});
+					if(ClientPrefs.downScroll) {
+						FlxTween.tween(healthBarBG,{"y":-900},0.9,{ease: FlxEase.elasticInOut});
+						FlxTween.tween(healthBar,{"y":-900},0.9,{ease: FlxEase.elasticInOut});
+						FlxTween.tween(iconP1,{"y":-900},0.9,{ease: FlxEase.elasticInOut});
+						FlxTween.tween(iconP2,{"y":-900},0.9,{ease: FlxEase.elasticInOut});
+					}
+					else {
+						FlxTween.tween(healthBarBG,{"y":900},0.9,{ease: FlxEase.elasticInOut});
+						FlxTween.tween(healthBar,{"y":900},0.9,{ease: FlxEase.elasticInOut});
+						FlxTween.tween(iconP1,{"y":900},0.9,{ease: FlxEase.elasticInOut});
+						FlxTween.tween(iconP2,{"y":900},0.9,{ease: FlxEase.elasticInOut});
+					}
 					defaultCamZoom = 0.9;
 				case 1857:
 					defaultCamZoom = 0.7;
