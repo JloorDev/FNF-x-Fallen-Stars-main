@@ -246,6 +246,10 @@ class PlayState extends MusicBeatState
 	public static var seenCutscene:Bool = false;
 	public static var deathCounter:Int = 0;
 
+	//
+	var bg1:FlxSprite;
+	var bg:FlxSprite;
+
 	public var defaultCamZoom:Float = 1.05;
 
 	// how big to stretch the pixel art assets
@@ -272,7 +276,7 @@ class PlayState extends MusicBeatState
 	public var luaArray:Array<FunkinLua> = [];
 	private var luaDebugGroup:FlxTypedGroup<DebugLuaText>;
 	public var introSoundsSuffix:String = '';
-	var starz:BGSprite;
+	var starz:FlxSprite;
 	// Debug buttons
 	private var debugKeysChart:Array<FlxKey>;
 	private var debugKeysCharacter:Array<FlxKey>;
@@ -687,12 +691,20 @@ class PlayState extends MusicBeatState
 					bg.antialiasing = false;
 					add(bg);
 				}
+
 			case 'space':
-				var bg:FlxSprite = new FlxSprite(-600,-200).loadGraphic(Paths.image('bg/Space'));
+				bg = new FlxSprite(-600,-200).loadGraphic(Paths.image('bg/Space'));
+				bg.scrollFactor.set(0.9, 0.9);
 				add(bg);
 
-				var bg1:FlxSprite = new FlxSprite(-600,-200).loadGraphic(Paths.image('bg/Stars'));
+				bg1 = new FlxSprite(-600,-200).loadGraphic(Paths.image('bg/Stars'));
+				bg1.scrollFactor.set(0.9, 0.9);
 				add(bg1);
+
+				new FlxTimer().start(5, function (tmrr:FlxTimer)
+				{
+					FlxTween.tween(bg1, {alpha: 0}, 5, {type:PINGPONG});
+				});
 
 				var a1:FlxSprite = new FlxSprite().loadGraphic(Paths.image('bg/a1'));
 				FlxTween.tween(a1,{"x":750, "y":900},10,{ease: FlxEase.circIn});
@@ -702,11 +714,13 @@ class PlayState extends MusicBeatState
 				FlxTween.tween(a2,{"x":-800, "y":-900},10,{ease: FlxEase.circIn});
 				add(a2);
 
-				starz = new BGSprite('bg/starz', 0, 0, 0, 0, ['shootinstarz'], false);
-				//starz.setGraphicSize(Std.int(bgGhouls.width * daPixelZoom));
-				//starz.updateHitbox();
-				//starz.visible = false;
+				starz = new FlxSprite(-150,-100);
+				starz.frames = Paths.getSparrowAtlas('bg/starz');
+				starz.animation.addByPrefix('weee', "shootinstarz", 24, false);
+				starz.scrollFactor.set(0.2, 0.2);
+				starz.updateHitbox();
 				add(starz);
+				starz.animation.play('weee', true);
 
 				blackFuck = new FlxSprite().makeGraphic(1280, 720, FlxColor.BLACK);
 				blackFuck.cameras = [camHUD];
@@ -3328,7 +3342,7 @@ class PlayState extends MusicBeatState
 				if(FlxTransitionableState.skipNextTransIn) {
 					CustomFadeTransition.nextCamera = null;
 				}
-				MusicBeatState.switchState(new FreeplayState());
+				MusicBeatState.switchState(new MainMenuState());
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 				changedDifficulty = false;
 			}
@@ -4227,22 +4241,40 @@ class PlayState extends MusicBeatState
 				case 156:
 					FlxTween.tween(blackFuck, {alpha: 0}, 1);
 					blackFuck.visible = false;
-				case 2:
-					starz.visible = false;
 				case 287:
-					defaultCamZoom = 0.7;
+					FlxTween.tween(FlxG.camera, {zoom: 0.7}, 1, {ease: FlxEase.quadInOut});
+					new FlxTimer().start(1 , function(tmr:FlxTimer)
+					{
+						defaultCamZoom = 0.7;
+					});
 				case 351:
-					defaultCamZoom = 0.57;
+					FlxTween.tween(FlxG.camera, {zoom: 0.57}, 1, {ease: FlxEase.quadInOut});
+					new FlxTimer().start(1 , function(tmr:FlxTimer)
+					{
+						defaultCamZoom = 0.57;
+					});
 				case 936:
-					defaultCamZoom = 0.9;
+					FlxTween.tween(FlxG.camera, {zoom: 0.9}, 1, {ease: FlxEase.quadInOut});
+					new FlxTimer().start(1 , function(tmr:FlxTimer)
+					{
+						defaultCamZoom = 0.9;
+					});
 					FlxG.camera.flash(FlxColor.BLACK, 2);
 					blackFuck.visible = true;
 				case 1071:
-					defaultCamZoom = 0.7;
+					FlxTween.tween(FlxG.camera, {zoom: 0.7}, 1, {ease: FlxEase.quadInOut});
+					new FlxTimer().start(1 , function(tmr:FlxTimer)
+					{
+						defaultCamZoom = 0.7;
+					});
 					FlxTween.tween(blackFuck, {alpha: 0}, 1);
 					blackFuck.visible = false;
 				case 1200:
-					defaultCamZoom = 0.57;
+					FlxTween.tween(FlxG.camera, {zoom: 0.57}, 1, {ease: FlxEase.quadInOut});
+					new FlxTimer().start(1 , function(tmr:FlxTimer)
+					{
+						defaultCamZoom = 0.57;
+					});
 				case 1463:
 					if(ClientPrefs.downScroll) {
 						FlxTween.tween(healthBarBG,{"y":-900},0.9,{ease: FlxEase.elasticInOut});
@@ -4258,9 +4290,18 @@ class PlayState extends MusicBeatState
 						FlxTween.tween(iconP2,{"y":900},0.9,{ease: FlxEase.elasticInOut});
 						FlxTween.tween(scoreTxt,{"y":900},0.9,{ease: FlxEase.elasticInOut});
 					}
-					defaultCamZoom = 0.9;
+					FlxTween.tween(FlxG.camera, {zoom: 0.9}, 1, {ease: FlxEase.quadInOut});
+					new FlxTimer().start(1 , function(tmr:FlxTimer)
+					{
+						defaultCamZoom = 0.9;
+					});
 				case 1857:
-					defaultCamZoom = 0.7;
+					blackFuck.visible = true;
+					FlxTween.tween(FlxG.camera, {zoom: 0.7}, 1, {ease: FlxEase.quadInOut});
+					new FlxTimer().start(1 , function(tmr:FlxTimer)
+					{
+						defaultCamZoom = 0.7;
+					});
 			}
 		}
 
@@ -4278,8 +4319,13 @@ class PlayState extends MusicBeatState
 		super.beatHit();
 
 		if(lastBeatHit >= curBeat) {
-			//trace('BEAT HIT: ' + curBeat + ', LAST HIT: ' + lastBeatHit);
 			return;
+		}
+
+		if (curSong == 'Our Broken Constellations' && curBeat >= 1472 && curBeat < 1856 && camZooming && FlxG.camera.zoom < 1.35)
+		{
+			FlxG.camera.zoom += 0.20;
+			camHUD.zoom += 0.08;
 		}
 
 		if (generatedMusic)
@@ -4359,6 +4405,15 @@ class PlayState extends MusicBeatState
 
 				if(heyTimer <= 0) bottomBoppers.dance(true);
 				santa.dance(true);
+			
+			case 'space':
+				if (!trainMoving)
+					trainCooldown += 1;
+
+				if (curBeat % 8 == 4 && FlxG.random.bool(30) && !trainMoving && trainCooldown > 8) {
+					trainCooldown = FlxG.random.int(-4, 0);
+					starz.animation.play('weee', true);
+				}
 
 			case 'limo':
 				if(!ClientPrefs.lowQuality) {

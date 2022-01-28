@@ -66,23 +66,13 @@ class CreditsState extends MusicBeatState
 		#end
 
 		var pisspoop:Array<Array<String>> = [ //Name - Icon name - Description - Link - BG Color
-			['Psych Engine Team'],
-			['Shadow Mario',		'shadowmario',		'Main Programmer of Psych Engine',						'https://twitter.com/Shadow_Mario_',	'FFDD33'],
-			['RiverOaken',			'riveroaken',		'Main Artist/Animator of Psych Engine',					'https://twitter.com/river_oaken',		'C30085'],
-			['bb-panzu',			'bb-panzu',			'Additional Programmer of Psych Engine',				'https://twitter.com/bbsub3',			'389A58'],
-			[''],
-			['Engine Contributors'],
-			['shubs',				'shubs',			'New Input System Programmer',							'https://twitter.com/yoshubs',			'4494E6'],
-			['SqirraRNG',			'gedehari',			'Chart Editor\'s Sound Waveform base',					'https://twitter.com/gedehari',			'FF9300'],
-			['iFlicky',				'iflicky',			'Delay/Combo Menu Song Composer\nand Dialogue Sounds',	'https://twitter.com/flicky_i',			'C549DB'],
-			['PolybiusProxy',		'polybiusproxy',	'.MP4 Video Loader Extension',							'https://twitter.com/polybiusproxy',	'FFEAA6'],
-			['Keoiki',				'keoiki',			'Note Splash Animations',								'https://twitter.com/Keoiki_',			'FFFFFF'],
-			[''],
-			["Funkin' Crew"],
-			['ninjamuffin99',		'ninjamuffin99',	"Programmer of Friday Night Funkin'",					'https://twitter.com/ninja_muffin99',	'F73838'],
-			['PhantomArcade',		'phantomarcade',	"Animator of Friday Night Funkin'",						'https://twitter.com/PhantomArcade3K',	'FFBB1B'],
-			['evilsk8r',			'evilsk8r',			"Artist of Friday Night Funkin'",						'https://twitter.com/evilsk8r',			'53E52C'],
-			['kawaisprite',			'kawaisprite',		"Composer of Friday Night Funkin'",						'https://twitter.com/kawaisprite',		'6475F3']
+			['FNF x Fallen Stars Team'],
+			['AlexR',		'alexr',		'Owner/Main Musician of FNF x Fallen Stars',				'https://www.youtube.com/channel/UC5tEcYoKNMgEZCbo8N_OQDg',		'a46458'],
+			['Jloor',			'jloor',		'Main Coder of FNF x Fallen Stars',					'https://twitter.com/GamerJloor',	'ffece5'],
+			['Zero Artist',			'zeroartist',		'Main Artist/Animator of FNF x Fallen Stars',				'https://twitter.com/zero_artist02',		'936cbc'],
+			['NexusMoon',			'nexusmoon',		'Musician of FNF x Fallen Stars',				'https://www.youtube.com/channel/UCzPbLNyU2_FbbpjLnX0IBSQ',		'a696f0'],
+			['SoyJulian',			'soyjulian',		'Background Artist of FNF x Fallen Stars',				'https://twitter.com/Kassi_34',		'c2ffad'],
+			['Manux',			'manux',		'Coder of FNF x Fallen Stars',				'https://twitter.com/ActionsAnimati1',		'bc4b30']
 		];
 		
 		for(i in pisspoop){
