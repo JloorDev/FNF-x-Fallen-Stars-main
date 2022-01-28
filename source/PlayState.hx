@@ -694,11 +694,11 @@ class PlayState extends MusicBeatState
 
 			case 'space':
 				bg = new FlxSprite(-600,-200).loadGraphic(Paths.image('bg/Space'));
-				bg.scrollFactor.set(0.9, 0.9);
+				bg.scrollFactor.set(0.3, 0.3);
 				add(bg);
 
 				bg1 = new FlxSprite(-600,-200).loadGraphic(Paths.image('bg/Stars'));
-				bg1.scrollFactor.set(0.9, 0.9);
+				bg1.scrollFactor.set(0.3, 0.3);
 				add(bg1);
 
 				new FlxTimer().start(5, function (tmrr:FlxTimer)
