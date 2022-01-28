@@ -20,6 +20,7 @@ import lime.app.Application;
 import Achievements;
 import editors.MasterEditorMenu;
 import flixel.input.keyboard.FlxKey;
+import openfl.utils.Assets as OpenFlAssets;
 
 using StringTools;
 
@@ -34,9 +35,6 @@ class MainMenuState extends MusicBeatState
 	
 	var optionShit:Array<String> = [
 		'story_mode',
-		'freeplay',
-		/*#if MODS_ALLOWED 'mods', #end
-		#if ACHIEVEMENTS_ALLOWED 'awards', #end*/
 		'credits',
 		'options'
 	];
@@ -235,15 +233,32 @@ class MainMenuState extends MusicBeatState
 								switch (daChoice)
 								{
 									case 'story_mode':
-										MusicBeatState.switchState(new StoryMenuState());
-									case 'freeplay':
-										MusicBeatState.switchState(new FreeplayState());
-									#if MODS_ALLOWED
-									case 'mods':
-										MusicBeatState.switchState(new ModsMenuState());
-									#end
-									case 'awards':
-										MusicBeatState.switchState(new AchievementsMenuState());
+										var songname = "Our Broken Constellations"; //song name -lunar
+										var diff = 2; // diffaculty (0-easy 1-normal 2-hard)
+										var daweek = 0; //0 - 5 (0-tutorial 1-week1 ect)
+						
+										var songLowercase:String = Paths.formatToSongPath(songname);
+										var poop:String = Highscore.formatSong(songLowercase, diff);
+										#if MODS_ALLOWED
+										if(!sys.FileSystem.exists(Paths.modsJson(songLowercase + '/' + poop)) && !sys.FileSystem.exists(Paths.json(songLowercase + '/' + poop))) {
+										#else
+										if(!OpenFlAssets.exists(Paths.json(songLowercase + '/' + poop))) {
+										#end
+											poop = songLowercase;
+											diff = 2;
+											trace('Couldnt find file');
+										}
+										trace(poop);
+							
+										PlayState.SONG = Song.loadFromJson(poop, songLowercase);
+										PlayState.isStoryMode = false;
+										PlayState.storyDifficulty = diff;
+							
+										PlayState.storyWeek = daweek;
+										trace('CURRENT WEEK: ' + WeekData.getWeekFileName());
+										LoadingState.loadAndSwitchState(new PlayState());
+							
+										FlxG.sound.music.volume = 0;
 									case 'credits':
 										MusicBeatState.switchState(new CreditsState());
 									case 'options':

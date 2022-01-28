@@ -162,32 +162,20 @@ class PauseSubState extends MusicBeatSubstate
 				case 'Change Difficulty':
 					menuItems = difficultyChoices;
 					regenMenu();
-				/*case 'Toggle Practice Mode':
-					PlayState.practiceMode = !PlayState.practiceMode;
-					PlayState.usedPractice = true;
-					practiceText.visible = PlayState.practiceMode;*/
 				case "Restart Song":
 					CustomFadeTransition.nextCamera = transCamera;
 					MusicBeatState.resetState();
 					FlxG.sound.music.volume = 0;
-				/*case 'Botplay':
-					PlayState.cpuControlled = !PlayState.cpuControlled;
-					PlayState.usedPractice = true;
-					botplayText.visible = PlayState.cpuControlled;*/
 				case "Exit to menu":
 					PlayState.deathCounter = 0;
 					PlayState.seenCutscene = false;
 					CustomFadeTransition.nextCamera = transCamera;
 					if(PlayState.isStoryMode) {
-						MusicBeatState.switchState(new StoryMenuState());
+						MusicBeatState.switchState(new MainMenuState());
 					} else {
-						MusicBeatState.switchState(new FreeplayState());
+						MusicBeatState.switchState(new MainMenuState());
 					}
 					FlxG.sound.playMusic(Paths.music('freakyMenu'));
-					/*PlayState.usedPractice = false;
-					PlayState.changedDifficulty = false;
-					PlayState.cpuControlled = false;*/
-
 				case 'BACK':
 					menuItems = menuItemsOG;
 					regenMenu();

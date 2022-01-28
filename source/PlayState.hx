@@ -117,6 +117,8 @@ class PlayState extends MusicBeatState
 	public var GF_X:Float = 400;
 	public var GF_Y:Float = 130;
 
+	var bgEffect:Dynamic = null;
+
 	public var songSpeedTween:FlxTween;
 	public var songSpeed(default, set):Float = 1;
 	
@@ -277,6 +279,9 @@ class PlayState extends MusicBeatState
 	
 	// Less laggy controls
 	private var keysArray:Array<Dynamic>;
+
+	//Black
+	var blackFuck:FlxSprite;
 
 	override public function create()
 	{
@@ -703,6 +708,16 @@ class PlayState extends MusicBeatState
 				//starz.visible = false;
 				add(starz);
 
+				blackFuck = new FlxSprite().makeGraphic(1280, 720, FlxColor.BLACK);
+				blackFuck.cameras = [camHUD];
+				blackFuck.screenCenter(X);
+				add(blackFuck);
+
+				new FlxTimer().start(1, function (tmrr:FlxTimer)
+				{
+					FlxTween.tween(blackFuck, {alpha: 0}, 1, {type:PINGPONG});
+				});
+
 				var bg0:FlxSprite = new FlxSprite(-600,-200).loadGraphic(Paths.image('bg/bg0'));
 				add(bg0);
 		}
@@ -851,18 +866,17 @@ class PlayState extends MusicBeatState
 		}
 		addShaderToCamera('camGame',bgEffect);*/
 
-		var bgEffect:Dynamic = null;
 		var curStages = curStage;
 
 		//if(curStages == 'space')
 			//gf.visible = false;
 
-		switch (curStages)
+		/*switch (curStages)
 		{
 			case 'space':
 				bgEffect = new Shaders.VCRDistortionEffect(0.0069, true, true, true);
 				trace('lol, shaders');
-		}
+		}*/
 		if (!ClientPrefs.lowQuality && bgEffect!=null)
 			addShaderToCamera('camGame', bgEffect);
 
@@ -2120,7 +2134,6 @@ class PlayState extends MusicBeatState
 	var startedCountdown:Bool = false;
 	var canPause:Bool = true;
 	var limoSpeed:Float = 0;
-	var shakeon:Bool = false;
 
 	override public function update(elapsed:Float)
 	{
@@ -2128,9 +2141,6 @@ class PlayState extends MusicBeatState
 		{
 			iconP1.swapOldIcon();
 		}
-
-		if (shakeon)
-			FlxG.camera.shake(0.02, 0.02);
 
 		if (ClientPrefs.cameraMovement == true && isCameraOnForcedPos == true && SONG.notes[Math.floor(curStep / 16)].mustHitSection && boyfriend.animation.curAnim.name == null && !doingreef)
 			isCameraOnForcedPos = false;
@@ -2420,9 +2430,6 @@ class PlayState extends MusicBeatState
 			health = 0;
 			trace("RESET = True");
 		}
-		
-		if (!dad.animation.curAnim.name.startsWith("sing"))
-			doDeathCheck();
 
 		var roundedSpeed:Float = FlxMath.roundDecimal(songSpeed, 2);
 		if (unspawnNotes[0] != null)
@@ -3126,8 +3133,8 @@ class PlayState extends MusicBeatState
 					camFollow.x = boyfriend.getMidpoint().x - 200;
 					camFollow.y = boyfriend.getMidpoint().y - 200;
 				case 'space':
-					camFollow.x = boyfriend.getMidpoint().x - 150;
-					camFollow.y = boyfriend.getMidpoint().y - 100;
+					camFollow.x = boyfriend.getMidpoint().x - 250;
+					camFollow.y = boyfriend.getMidpoint().y - 300;
 			}
 			camFollow.x -= boyfriend.cameraPosition[0];
 			camFollow.y += boyfriend.cameraPosition[1];
@@ -3846,9 +3853,6 @@ class PlayState extends MusicBeatState
 			];
 
 			char.playAnim(animToPlay, true);
-			if (dad.animation.curAnim.name.startsWith("sing")){
-				health -= 0.01;
-			}
 			if (ClientPrefs.cameraMovement == true && !notisturn && cameraTwn == null && !doingreef)
 				triggerEventNote('Camera Follow Pos',Std.string(Std.int(singAnimationsPostions[Std.int(Math.abs(note.noteData))][0])),Std.string(Std.int(singAnimationsPostions[Std.int(Math.abs(note.noteData))][1])));
 			char.holdTimer = 0;
@@ -3927,6 +3931,9 @@ class PlayState extends MusicBeatState
 					case 'school' | 'schoolEvil':
 						xx2 = (boyfriend.getMidpoint().x - 200) - boyfriend.cameraPosition[0];
 						yy2 = (boyfriend.getMidpoint().y - 200) + boyfriend.cameraPosition[1];
+					case 'space':
+						xx2= (boyfriend.getMidpoint().x - 250) - boyfriend.cameraPosition[0];
+						yy2 = (boyfriend.getMidpoint().y - 300) + boyfriend.cameraPosition[1];
 				}
 
 				var singAnimationsPostions:Array<Array<Float>> = [
@@ -4215,39 +4222,41 @@ class PlayState extends MusicBeatState
 			return;
 		}
 
-		if(curStage == 'space') {
+		if (curStage == 'space' && curSong == 'Our Broken Constellations') {
 			switch (curStep) {
+				case 156:
+					FlxTween.tween(blackFuck, {alpha: 0}, 1);
+					blackFuck.visible = false;
 				case 2:
 					starz.visible = false;
 				case 287:
 					defaultCamZoom = 0.7;
 				case 351:
 					defaultCamZoom = 0.57;
-				case 607:
-					shakeon = true;
-				case 672:
-					shakeon = false;
 				case 936:
 					defaultCamZoom = 0.9;
+					FlxG.camera.flash(FlxColor.BLACK, 2);
+					blackFuck.visible = true;
 				case 1071:
 					defaultCamZoom = 0.7;
+					FlxTween.tween(blackFuck, {alpha: 0}, 1);
+					blackFuck.visible = false;
 				case 1200:
 					defaultCamZoom = 0.57;
-					shakeon = true;
-				case 1456:
-					shakeon = false;
 				case 1463:
 					if(ClientPrefs.downScroll) {
 						FlxTween.tween(healthBarBG,{"y":-900},0.9,{ease: FlxEase.elasticInOut});
 						FlxTween.tween(healthBar,{"y":-900},0.9,{ease: FlxEase.elasticInOut});
 						FlxTween.tween(iconP1,{"y":-900},0.9,{ease: FlxEase.elasticInOut});
 						FlxTween.tween(iconP2,{"y":-900},0.9,{ease: FlxEase.elasticInOut});
+						FlxTween.tween(scoreTxt,{"y":-900},0.9,{ease: FlxEase.elasticInOut});
 					}
 					else {
 						FlxTween.tween(healthBarBG,{"y":900},0.9,{ease: FlxEase.elasticInOut});
 						FlxTween.tween(healthBar,{"y":900},0.9,{ease: FlxEase.elasticInOut});
 						FlxTween.tween(iconP1,{"y":900},0.9,{ease: FlxEase.elasticInOut});
 						FlxTween.tween(iconP2,{"y":900},0.9,{ease: FlxEase.elasticInOut});
+						FlxTween.tween(scoreTxt,{"y":900},0.9,{ease: FlxEase.elasticInOut});
 					}
 					defaultCamZoom = 0.9;
 				case 1857:
