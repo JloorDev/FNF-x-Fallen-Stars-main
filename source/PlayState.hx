@@ -144,6 +144,12 @@ class PlayState extends MusicBeatState
 	public var notes:FlxTypedGroup<Note>;
 	public var unspawnNotes:Array<Note> = [];
 	public var eventNotes:Array<Dynamic> = [];
+	var a1:FlxSprite;
+	var a2:FlxSprite;
+	var a3:FlxSprite;
+	var a4:FlxSprite;
+	var a5:FlxSprite;
+	var a6:FlxSprite;
 
 	private var strumLine:FlxSprite;
 
@@ -706,13 +712,33 @@ class PlayState extends MusicBeatState
 					FlxTween.tween(bg1, {alpha: 0}, 5, {type:PINGPONG});
 				});
 
-				var a1:FlxSprite = new FlxSprite().loadGraphic(Paths.image('bg/a1'));
+				a1 = new FlxSprite().loadGraphic(Paths.image('bg/a1'));
 				FlxTween.tween(a1,{"x":750, "y":900},10,{ease: FlxEase.circIn});
 				add(a1);
 
-				var a2:FlxSprite = new FlxSprite().loadGraphic(Paths.image('bg/a2'));
+				a2 = new FlxSprite().loadGraphic(Paths.image('bg/a2'));
 				FlxTween.tween(a2,{"x":-800, "y":-900},10,{ease: FlxEase.circIn});
 				add(a2);
+
+				a3 = new FlxSprite().loadGraphic(Paths.image('bg/a1'));
+				FlxTween.tween(a3,{"x":892, "y":-982},10,{ease: FlxEase.circIn});
+				a3.visible = false;
+				add(a3);
+
+				a4 = new FlxSprite().loadGraphic(Paths.image('bg/a2'));
+				FlxTween.tween(a4,{"x":-984, "y":900},10,{ease: FlxEase.circIn});
+				a4.visible = false;
+				add(a4);
+
+				a5 = new FlxSprite().loadGraphic(Paths.image('bg/a1'));
+				FlxTween.tween(a5,{"x":982, "y":-893},10,{ease: FlxEase.circIn});
+				a5.visible = false;
+				add(a5);
+
+				a6 = new FlxSprite().loadGraphic(Paths.image('bg/a2'));
+				FlxTween.tween(a6,{"x":-984, "y":900},10,{ease: FlxEase.circIn});
+				a6.visible = false;
+				add(a6);
 
 				starz = new FlxSprite(-150,-100);
 				starz.frames = Paths.getSparrowAtlas('bg/starz');
@@ -4238,6 +4264,16 @@ class PlayState extends MusicBeatState
 
 		if (curStage == 'space' && curSong == 'Our Broken Constellations') {
 			switch (curStep) {
+				case 50:
+					a1.visible = false;
+					a2.visible = false;
+					a3.visible = true;
+					a4.visible = true;
+				case 82:
+					a3.visible = false;
+					a4.visible = false;
+					a5.visible = true;
+					a6.visible = true;
 				case 156:
 					FlxTween.tween(blackFuck, {alpha: 0}, 1);
 					blackFuck.visible = false;
@@ -4282,8 +4318,7 @@ class PlayState extends MusicBeatState
 						FlxTween.tween(iconP1,{"y":-900},0.9,{ease: FlxEase.elasticInOut});
 						FlxTween.tween(iconP2,{"y":-900},0.9,{ease: FlxEase.elasticInOut});
 						FlxTween.tween(scoreTxt,{"y":-900},0.9,{ease: FlxEase.elasticInOut});
-					}
-					else {
+					} else {
 						FlxTween.tween(healthBarBG,{"y":900},0.9,{ease: FlxEase.elasticInOut});
 						FlxTween.tween(healthBar,{"y":900},0.9,{ease: FlxEase.elasticInOut});
 						FlxTween.tween(iconP1,{"y":900},0.9,{ease: FlxEase.elasticInOut});
