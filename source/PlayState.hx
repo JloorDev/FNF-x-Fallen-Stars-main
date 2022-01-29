@@ -701,30 +701,32 @@ class PlayState extends MusicBeatState
 
 			case 'space':
 				bg = new FlxSprite(-600,-200).loadGraphic(Paths.image('bg/Space'));
+				bg.antialiasing = ClientPrefs.globalAntialiasing;
 				bg.scrollFactor.set(0.3, 0.3);
 				add(bg);
 
 				bg1 = new FlxSprite(-600,-200).loadGraphic(Paths.image('bg/Stars'));
+				bg1.antialiasing = ClientPrefs.globalAntialiasing;
 				bg1.scrollFactor.set(0.3, 0.3);
 				add(bg1);
-
 				new FlxTimer().start(5, function (tmrr:FlxTimer)
 				{
 					FlxTween.tween(bg1, {alpha: 0}, 5, {type:PINGPONG});
 				});
 
 				a1 = new FlxSprite(900, -190).loadGraphic(Paths.image('bg/a1'));
-				FlxTween.tween(a1,{"y":-30},8,{type:PINGPONG});
+				a1.antialiasing = ClientPrefs.globalAntialiasing;
 				a1.scrollFactor.set(0.3, 0.3);
 				add(a1);
 
 				a2 = new FlxSprite(-150, -35).loadGraphic(Paths.image('bg/a2'));
-				FlxTween.tween(a2,{"y":-30},8,{type:PINGPONG});
+				a2.antialiasing = ClientPrefs.globalAntialiasing;
 				a2.scrollFactor.set(0.3, 0.3);
 				add(a2);
 
 				starz = new FlxSprite(-180,-120);
 				starz.frames = Paths.getSparrowAtlas('bg/starz');
+				starz.antialiasing = ClientPrefs.globalAntialiasing;
 				starz.animation.addByPrefix('weee', "shootinstarz", 24, false);
 				starz.scrollFactor.set(0.2, 0.2);
 				starz.updateHitbox();
@@ -756,7 +758,7 @@ class PlayState extends MusicBeatState
 				alphaText.updateHitbox();
 				add(alphaText);
 
-				thanksText = new FlxText("THANKS FOR PLAYING!!", 32);
+				thanksText = new FlxText("THANKS FOR PLAYING ALPHA!!", 32);
 				thanksText.scrollFactor.set();
 				thanksText.cameras = [camOther];
 				thanksText.setFormat(Paths.font('vcr.ttf'), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -768,7 +770,11 @@ class PlayState extends MusicBeatState
 				add(thanksText);
 
 				var bg0:FlxSprite = new FlxSprite(-600,-200).loadGraphic(Paths.image('bg/bg0'));
+				bg0.antialiasing = ClientPrefs.globalAntialiasing;
 				add(bg0);
+
+				FlxTween.tween(a2,{"y":-30},8,{type:PINGPONG});
+				FlxTween.tween(a1,{"y":-30},8,{type:PINGPONG});
 		}
 
 		if(isPixelStage) {
@@ -906,26 +912,9 @@ class PlayState extends MusicBeatState
 		var camPos:FlxPoint = new FlxPoint(gf.getGraphicMidpoint().x, gf.getGraphicMidpoint().y);
 		camPos.x += gf.cameraPosition[0];
 		camPos.y += gf.cameraPosition[1];
-/*
-		var bgEffect:Dynamic = null;
-		var daSong = SONG.song.toLowerCase();
-		switch(daSong) {
-			case 'our-broken-constellations':
-				bgEffect = new Shaders.VCRDistortionEffect(0.0069,true,true,true);
-		}
-		addShaderToCamera('camGame',bgEffect);*/
 
 		var curStages = curStage;
 
-		//if(curStages == 'space')
-			//gf.visible = false;
-
-		/*switch (curStages)
-		{
-			case 'space':
-				bgEffect = new Shaders.VCRDistortionEffect(0.0069, true, true, true);
-				trace('lol, shaders');
-		}*/
 		if (!ClientPrefs.lowQuality && bgEffect!=null)
 			addShaderToCamera('camGame', bgEffect);
 

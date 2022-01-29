@@ -37,7 +37,7 @@ class CreditsState extends MusicBeatState
 	{
 		#if desktop
 		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In the Menus", null);
+		DiscordClient.changePresence("In the CreditsMenu", null);
 		#end
 
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
@@ -72,7 +72,7 @@ class CreditsState extends MusicBeatState
 			['Zero Artist',			'zeroartist',		'Main Artist/Animator of FNF x Fallen Stars',				'https://twitter.com/zero_artist02',		'936cbc'],
 			['NexusMoon',			'nexusmoon',		'Musician of FNF x Fallen Stars',				'https://www.youtube.com/channel/UCzPbLNyU2_FbbpjLnX0IBSQ',		'a696f0'],
 			['SoyJulian',			'soyjulian',		'Background Artist of FNF x Fallen Stars',				'https://twitter.com/Kassi_34',		'c2ffad'],
-			['Lucio',			'lucio',		'Main Charter of FNF x Fallen Stars',				'https://www.youtube.com/channel/UCuRAoU0BC-rifggQ9qOCYaQ',		'c2ffad'],
+			['Lucio',			'lucio',		'Main Charter of FNF x Fallen Stars',				'https://www.youtube.com/channel/UCuRAoU0BC-rifggQ9qOCYaQ',		'82d55d'],
 			['Manux',			'manux',		'Coder of FNF x Fallen Stars',				'https://twitter.com/ActionsAnimati1',		'bc4b30']
 		];
 		
