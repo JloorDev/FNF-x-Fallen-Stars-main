@@ -81,6 +81,7 @@ class ChartingState extends MusicBeatState
 		['Change Character', "Value 1: Character to change (Dad, BF, GF)\nValue 2: New character's name"],
 		['Change Scroll Speed', "Value 1: Target value\nValue 2: Time it takes to change fully"],
 		['Add Shader', 'Value 1: Character/Camera (Gf,Bf,Dad,camGame,camHud,camOther)\nValue 2: Shader/Effect to Add(chromatic aberration, vcrdistortion\nglitch, bloom, pulse)\n(The shaders are not activated when you activate the graphics in low.)'],
+		['Wilter Camera Zoom', 'Value 1: Zoom to add'],
 	];
 
 	var _file:FileReference;

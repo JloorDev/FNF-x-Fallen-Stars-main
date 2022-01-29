@@ -144,12 +144,10 @@ class PlayState extends MusicBeatState
 	public var notes:FlxTypedGroup<Note>;
 	public var unspawnNotes:Array<Note> = [];
 	public var eventNotes:Array<Dynamic> = [];
+
+	//
 	var a1:FlxSprite;
 	var a2:FlxSprite;
-	var a3:FlxSprite;
-	var a4:FlxSprite;
-	var a5:FlxSprite;
-	var a6:FlxSprite;
 
 	private var strumLine:FlxSprite;
 
@@ -255,6 +253,8 @@ class PlayState extends MusicBeatState
 	//
 	var bg1:FlxSprite;
 	var bg:FlxSprite;
+	var alphaText:FlxText;
+	var thanksText:FlxText;
 
 	public var defaultCamZoom:Float = 1.05;
 
@@ -292,6 +292,7 @@ class PlayState extends MusicBeatState
 
 	//Black
 	var blackFuck:FlxSprite;
+	var blackFuck2:FlxSprite;
 
 	override public function create()
 	{
@@ -712,35 +713,17 @@ class PlayState extends MusicBeatState
 					FlxTween.tween(bg1, {alpha: 0}, 5, {type:PINGPONG});
 				});
 
-				a1 = new FlxSprite().loadGraphic(Paths.image('bg/a1'));
-				FlxTween.tween(a1,{"x":750, "y":900},10,{ease: FlxEase.circIn});
+				a1 = new FlxSprite(900, -190).loadGraphic(Paths.image('bg/a1'));
+				FlxTween.tween(a1,{"y":-30},8,{type:PINGPONG});
+				a1.scrollFactor.set(0.3, 0.3);
 				add(a1);
 
-				a2 = new FlxSprite().loadGraphic(Paths.image('bg/a2'));
-				FlxTween.tween(a2,{"x":-800, "y":-900},10,{ease: FlxEase.circIn});
+				a2 = new FlxSprite(-150, -35).loadGraphic(Paths.image('bg/a2'));
+				FlxTween.tween(a2,{"y":-30},8,{type:PINGPONG});
+				a2.scrollFactor.set(0.3, 0.3);
 				add(a2);
 
-				a3 = new FlxSprite().loadGraphic(Paths.image('bg/a1'));
-				FlxTween.tween(a3,{"x":892, "y":-982},10,{ease: FlxEase.circIn});
-				a3.visible = false;
-				add(a3);
-
-				a4 = new FlxSprite().loadGraphic(Paths.image('bg/a2'));
-				FlxTween.tween(a4,{"x":-984, "y":900},10,{ease: FlxEase.circIn});
-				a4.visible = false;
-				add(a4);
-
-				a5 = new FlxSprite().loadGraphic(Paths.image('bg/a1'));
-				FlxTween.tween(a5,{"x":982, "y":-893},10,{ease: FlxEase.circIn});
-				a5.visible = false;
-				add(a5);
-
-				a6 = new FlxSprite().loadGraphic(Paths.image('bg/a2'));
-				FlxTween.tween(a6,{"x":-984, "y":900},10,{ease: FlxEase.circIn});
-				a6.visible = false;
-				add(a6);
-
-				starz = new FlxSprite(-150,-100);
+				starz = new FlxSprite(-180,-120);
 				starz.frames = Paths.getSparrowAtlas('bg/starz');
 				starz.animation.addByPrefix('weee', "shootinstarz", 24, false);
 				starz.scrollFactor.set(0.2, 0.2);
@@ -757,6 +740,32 @@ class PlayState extends MusicBeatState
 				{
 					FlxTween.tween(blackFuck, {alpha: 0}, 1, {type:PINGPONG});
 				});
+
+				blackFuck2 = new FlxSprite().makeGraphic(1280, 720, FlxColor.BLACK);
+				blackFuck2.cameras = [camOther];
+				blackFuck2.alpha = 0;
+				blackFuck2.screenCenter(X);
+				add(blackFuck2);
+
+				alphaText = new FlxText(20, FlxG.height - 40, 0, "ALPHA", 32);
+				alphaText.scrollFactor.set();
+				alphaText.cameras = [camHUD];
+				alphaText.setFormat(Paths.font('vcr.ttf'), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+				alphaText.x = FlxG.width - (alphaText.width + 20);
+				alphaText.alpha = 0.7;
+				alphaText.updateHitbox();
+				add(alphaText);
+
+				thanksText = new FlxText("THANKS FOR PLAYING!!", 32);
+				thanksText.scrollFactor.set();
+				thanksText.cameras = [camOther];
+				thanksText.setFormat(Paths.font('vcr.ttf'), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+				thanksText.scale.set(1.5, 1.5);
+				thanksText.screenCenter(X);
+				thanksText.screenCenter(Y);
+				thanksText.updateHitbox();
+				thanksText.alpha = 0;	
+				add(thanksText);
 
 				var bg0:FlxSprite = new FlxSprite(-600,-200).loadGraphic(Paths.image('bg/bg0'));
 				add(bg0);
@@ -4264,18 +4273,8 @@ class PlayState extends MusicBeatState
 
 		if (curStage == 'space' && curSong == 'Our Broken Constellations') {
 			switch (curStep) {
-				case 50:
-					a1.visible = false;
-					a2.visible = false;
-					a3.visible = true;
-					a4.visible = true;
-				case 82:
-					a3.visible = false;
-					a4.visible = false;
-					a5.visible = true;
-					a6.visible = true;
 				case 156:
-					FlxTween.tween(blackFuck, {alpha: 0}, 1);
+					FlxG.camera.flash(FlxColor.BLACK, 1);
 					blackFuck.visible = false;
 				case 287:
 					FlxTween.tween(FlxG.camera, {zoom: 0.7}, 1, {ease: FlxEase.quadInOut});
@@ -4295,7 +4294,7 @@ class PlayState extends MusicBeatState
 					{
 						defaultCamZoom = 0.9;
 					});
-					FlxG.camera.flash(FlxColor.BLACK, 2);
+					FlxG.camera.flash(FlxColor.BLACK, 1);
 					blackFuck.visible = true;
 				case 1071:
 					FlxTween.tween(FlxG.camera, {zoom: 0.7}, 1, {ease: FlxEase.quadInOut});
@@ -4303,7 +4302,8 @@ class PlayState extends MusicBeatState
 					{
 						defaultCamZoom = 0.7;
 					});
-					FlxTween.tween(blackFuck, {alpha: 0}, 1);
+				case 1199:
+					FlxG.camera.flash(FlxColor.BLACK, 1);
 					blackFuck.visible = false;
 				case 1200:
 					FlxTween.tween(FlxG.camera, {zoom: 0.57}, 1, {ease: FlxEase.quadInOut});
@@ -4331,12 +4331,16 @@ class PlayState extends MusicBeatState
 						defaultCamZoom = 0.9;
 					});
 				case 1857:
+					FlxG.camera.flash(FlxColor.BLACK, 1);
 					blackFuck.visible = true;
 					FlxTween.tween(FlxG.camera, {zoom: 0.7}, 1, {ease: FlxEase.quadInOut});
 					new FlxTimer().start(1 , function(tmr:FlxTimer)
 					{
 						defaultCamZoom = 0.7;
 					});
+				case 2112:
+					FlxTween.tween(blackFuck2, {alpha: 1}, 1);
+					FlxTween.tween(thanksText, {alpha: 1}, 1);
 			}
 		}
 
